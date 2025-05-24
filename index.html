@@ -2,7 +2,7 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8" />
-  <title>Game Hitung Anak</title>
+  <title>Game Hitung Emoji</title>
   <style>
     body {
       font-family: 'Comic Sans MS', cursive;
@@ -48,12 +48,12 @@
       gap: 25px;
       font-size: 8rem; /* 2x dari sebelumnya */
       max-width: 90%;
-      margin: 0 auto 30px;
+      margin: 0 auto 60px; /* jarak bawah diperbesar jadi 60px */
     }
 
     .choice-btn {
-      font-size: 3.6rem; /* 3x dari sebelumnya */
-      padding: 20px 30px;
+      font-size: 7.2rem; /* 2x dari sebelumnya (yang sebelumnya 3.6rem) */
+      padding: 40px 60px;
       margin: 10px;
       background-color: #4CAF50;
       color: white;
@@ -105,27 +105,18 @@
       #emojiContainer {
         font-size: 7rem;
         gap: 20px;
+        margin-bottom: 60px; /* tetap jarak bawah sama di mobile */
       }
 
       .choice-btn {
-        font-size: 3rem;
-        padding: 18px 28px;
+        font-size: 6rem;
+        padding: 36px 54px;
       }
-    }
-
-    /* Canvas covers entire viewport, above content */
-    #fireworksCanvas {
-      position: fixed;
-      pointer-events: none;
-      top: 0; left: 0;
-      width: 100vw;
-      height: 100vh;
-      z-index: 9999;
     }
   </style>
 </head>
 <body>
-  <h1>🎯 Game Hitung Anak</h1>
+  <h1>🎯 Game Hitung Emoji</h1>
   <div id="levelText">Level 1</div>
 
   <div id="targetBox">
@@ -138,10 +129,8 @@
   <div id="message"></div>
   <button id="nextBtn">➡️ Next Level</button>
 
-  <canvas id="fireworksCanvas"></canvas>
-
   <script>
-    const emojiString = `🐱🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐽🐸🐵🙈🙉🙊🐒🐔🐧🐦🐤🐣🐥🦆🦅🦉🦇🐺🐗🐴🦄🐝🪱🐛🦋🐌🐞🐜🪰🪳🦟🦗🕷🕸🦂🐢🐍🦎🦖🦕🐙🦑🦐🦞🦀🪼🐡🐠🐟🐬🐳🐋🦈🐊🐅🐆🦓🫏🦍🦧🦣🐘🦛🦏🐪🐫🦒🦘🦬🐃🐂🐄🐎🐖🐏🐑🦙🐐🦌🫎🐕🐩🦮🐕‍🦺🐈🐈‍⬛🪽🪶🐓🦃🦤🦚🦜🦢🪿🦩🕊🐇🦝🦨🦡🍏🍎🍐🍊🍋🍌🍉🍇🍓🫐🍈🍒🍑🥭🍍🥥🥝🍅🍆🥑🥦🫛🥬🫜🥒🌶🫑🌽🥕🫒🧄🧅🫚🥔🍠🫘🥐🥯🍞🥖🥨🧀🥚🍳🧈🥞🧇🥓🥩🍗🍖🦴🌭🍔🍟🍕🫓🥪🥙🧆🌮🌯🫔🥗🥘🫕🥫🍝🍜🍲🍛🍣🍱🥟🦪🍤🍙🍚🍘🍥🥠🥮🍢🍡🍧🍨🍦🥧🧁🍰🎂🍮🍭🍬🍫🍿🍩🍪🌰🥜🍯🥛🍼🫖☕️🍵🧃🥤🧋🫙🍶🍺🍻🥂🍷🫗🥃🍸⚽️🏀🏈⚾️🚗🚕🚙🚌🚎🏎🚓🚑🚒🚐🛻🚚🚛🚜🛴🚲🛵🏍🛺🚨🚔🚍🚘🚖🛞🚡🚠🚟🚃🚋🚞🚝🚄🚅🚈🚂🚆🚇🚊🚉✈️🛫🛬🛩💺🛰🚀🛸`;
+    const emojiString = `🐱🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐽🐸🐵🙈🙉🙊🐒🐔🐧🐦🐤🐣🐥🦆🦅🦉🦇🐺🐗🐴🦄🐝🐛🦋🐌🐞🐜🦟🦗🕷🦂🐢🐍🦎🦖🦕🐙🦑🦐🦞🦀🐡🐠🐟🐬🐳🐋🦈🐊🐅🐆🦓🦍🦧🐘🦛🦏🐪🐫🦒🦘🐃🐂🐄🐎🐖🐏🐑🦙🐐🦌🐕🐩🦮🐕‍🦺🐈🐓🦃🦚🦜🦢🦩🐇🦝🦨🦡🍏🍎🍐🍊🍋🍌🍉🍇🍓🍈🍒🍑🥭🍍🥥🥝🍅🍆🥑🥦🥬🥒🌶🚓🚑🚒🚐🚚🚛🚜🛴🚲🛵🏍🛺🚨🚔🚍🚘🚖🚂🚆🚇🚊🚉✈️🛫🛬💺🚀🛸`;
     const allEmojis = Array.from(new Set(emojiString.split(/(?<=\p{Extended_Pictographic})/gu)))
       .filter(e => e !== '🪲' && e.length <= 3);
 
@@ -152,174 +141,6 @@
     const messageDiv = document.getElementById("message");
     const levelText = document.getElementById("levelText");
     const nextBtn = document.getElementById("nextBtn");
-
-    const canvas = document.getElementById('fireworksCanvas');
-    const ctx = canvas.getContext('2d');
-    let fireworks = [];
-    let particles = [];
-    let animationFrameId;
-
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    window.addEventListener('resize', resizeCanvas);
-    resizeCanvas();
-
-    class Firework {
-      constructor(sx, sy, tx, ty) {
-        this.x = sx;
-        this.y = sy;
-        this.sx = sx;
-        this.sy = sy;
-        this.tx = tx;
-        this.ty = ty;
-        this.distanceToTarget = distance(sx, sy, tx, ty);
-        this.distanceTraveled = 0;
-        this.coordinates = [];
-        this.coordinateCount = 3;
-        while (this.coordinateCount--) {
-          this.coordinates.push([this.x, this.y]);
-        }
-        this.angle = Math.atan2(ty - sy, tx - sx);
-        this.speed = 5;
-        this.acceleration = 1.05;
-        this.brightness = random(50, 70);
-        this.targetRadius = 1;
-      }
-
-      update(index) {
-        this.coordinates.pop();
-        this.coordinates.unshift([this.x, this.y]);
-        if (this.targetRadius < 8) {
-          this.targetRadius += 0.3;
-        } else {
-          this.targetRadius = 1;
-        }
-        this.speed *= this.acceleration;
-        let vx = Math.cos(this.angle) * this.speed;
-        let vy = Math.sin(this.angle) * this.speed;
-        this.distanceTraveled = distance(this.sx, this.sy, this.x + vx, this.y + vy);
-        if (this.distanceTraveled >= this.distanceToTarget) {
-          createParticles(this.tx, this.ty);
-          fireworks.splice(index, 1);
-        } else {
-          this.x += vx;
-          this.y += vy;
-        }
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
-        ctx.lineTo(this.x, this.y);
-        ctx.strokeStyle = `hsl(${random(0, 360)}, 100%, ${this.brightness}%)`;
-        ctx.stroke();
-
-        ctx.beginPath();
-        ctx.arc(this.tx, this.ty, this.targetRadius, 0, Math.PI * 2);
-        ctx.stroke();
-      }
-    }
-
-    class Particle {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.coordinates = [];
-        this.coordinateCount = 5;
-        while (this.coordinateCount--) {
-          this.coordinates.push([this.x, this.y]);
-        }
-        this.angle = random(0, Math.PI * 2);
-        this.speed = random(1, 10);
-        this.friction = 0.95;
-        this.gravity = 1;
-        this.hue = random(0, 360);
-        this.brightness = random(50, 80);
-        this.alpha = 1;
-        this.decay = random(0.015, 0.03);
-      }
-
-      update(index) {
-        this.coordinates.pop();
-        this.coordinates.unshift([this.x, this.y]);
-        this.speed *= this.friction;
-        this.x += Math.cos(this.angle) * this.speed;
-        this.y += Math.sin(this.angle) * this.speed + this.gravity;
-        this.alpha -= this.decay;
-
-        if (this.alpha <= 0) {
-          particles.splice(index, 1);
-        }
-      }
-
-      draw() {
-        ctx.beginPath();
-        ctx.moveTo(this.coordinates[this.coordinates.length - 1][0], this.coordinates[this.coordinates.length - 1][1]);
-        ctx.lineTo(this.x, this.y);
-        ctx.strokeStyle = `hsla(${this.hue}, 100%, ${this.brightness}%, ${this.alpha})`;
-        ctx.stroke();
-      }
-    }
-
-    function distance(aX, aY, bX, bY) {
-      const dx = bX - aX;
-      const dy = bY - aY;
-      return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    function random(min, max) {
-      return Math.random() * (max - min) + min;
-    }
-
-    function createParticles(x, y) {
-      const particleCount = 30;
-      for (let i = 0; i < particleCount; i++) {
-        particles.push(new Particle(x, y));
-      }
-    }
-
-    function loop() {
-      ctx.globalCompositeOperation = 'destination-out';
-      ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.globalCompositeOperation = 'lighter';
-
-      for (let i = fireworks.length - 1; i >= 0; i--) {
-        fireworks[i].draw();
-        fireworks[i].update(i);
-      }
-
-      for (let i = particles.length - 1; i >= 0; i--) {
-        particles[i].draw();
-        particles[i].update(i);
-      }
-
-      animationFrameId = requestAnimationFrame(loop);
-    }
-
-    function startFireworks() {
-      let count = 0;
-      function launch() {
-        if (count >= 5) {
-          cancelAnimationFrame(animationFrameId);
-          fireworks.length = 0;
-          particles.length = 0;
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          return;
-        }
-        const sx = canvas.width / 2;
-        const sy = canvas.height;
-        const tx = random(100, canvas.width - 100);
-        const ty = random(50, canvas.height / 2);
-        fireworks.push(new Firework(sx, sy, tx, ty));
-        count++;
-        setTimeout(launch, 400);
-      }
-      launch();
-      loop();
-    }
 
     function setupLevel() {
       messageDiv.textContent = "";
@@ -363,7 +184,6 @@
           if (num === correctCount) {
             messageDiv.textContent = "✅ Benar!";
             nextBtn.style.display = "inline-block";
-            startFireworks();
             setTimeout(() => {
               level++;
               setupLevel();
