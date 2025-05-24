@@ -28,35 +28,35 @@
     }
 
     #targetLabel {
-      font-size: 1.2rem;
+      font-size: 1.4rem;
       margin-bottom: 10px;
       color: #444;
     }
 
     #targetEmoji {
-      font-size: 4rem;
+      font-size: 6rem;
       margin: 10px auto;
       border: 4px solid #4CAF50;
       border-radius: 20px;
       display: inline-block;
-      padding: 20px;
+      padding: 25px;
       background-color: #fff;
     }
 
     #emojiContainer {
-      display: flex;
-      flex-wrap: wrap;
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 25px;
       justify-content: center;
-      font-size: 2.2rem;
-      gap: 15px;
-      max-width: 90%;
-      margin: 0 auto 20px;
+      font-size: 4rem;
+      max-width: 600px;
+      margin: 0 auto 30px;
     }
 
     .choice-btn {
-      font-size: 1.1rem;
-      padding: 10px 20px;
-      margin: 8px;
+      font-size: 1.2rem;
+      padding: 12px 24px;
+      margin: 10px;
       background-color: #4CAF50;
       color: white;
       border: none;
@@ -72,23 +72,23 @@
     #message {
       font-weight: bold;
       margin-top: 10px;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
     }
 
     @media (max-width: 600px) {
       #targetEmoji {
+        font-size: 4.5rem;
+        padding: 20px;
+      }
+
+      #emojiContainer {
         font-size: 3rem;
-        padding: 15px;
+        gap: 20px;
       }
 
       .choice-btn {
         font-size: 1rem;
-        padding: 8px 16px;
-      }
-
-      #emojiContainer {
-        font-size: 1.8rem;
-        gap: 10px;
+        padding: 10px 20px;
       }
     }
   </style>
