@@ -72,6 +72,22 @@
       font-size: 1.3rem;
     }
 
+    #nextBtn {
+      display: none;
+      margin-top: 20px;
+      padding: 12px 24px;
+      font-size: 1rem;
+      background-color: #2196F3;
+      color: white;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    #nextBtn:hover {
+      background-color: #1976D2;
+    }
+
     @media (max-width: 600px) {
       #targetEmoji {
         font-size: 4.5rem;
@@ -102,6 +118,7 @@
   <div id="emojiContainer"></div>
   <div id="choices"></div>
   <div id="message"></div>
+  <button id="nextBtn">➡️ Next Level</button>
 
   <script>
     const emojiString = `🐱🐭🐹🐰🦊🐻🐼🐨🐯🦁🐮🐷🐽🐸🐵🙈🙉🙊🐒🐔🐧🐦🐤🐣🐥🦆🦅🦉🦇🐺🐗🐴🦄🐝🪱🐛🦋🐌🐞🐜🪰🪳🦟🦗🕷🕸🦂🐢🐍🦎🦖🦕🐙🦑🦐🦞🦀🪼🐡🐠🐟🐬🐳🐋🦈🐊🐅🐆🦓🫏🦍🦧🦣🐘🦛🦏🐪🐫🦒🦘🦬🐃🐂🐄🐎🐖🐏🐑🦙🐐🦌🫎🐕🐩🦮🐕‍🦺🐈🐈‍⬛🪽🪶🐓🦃🦤🦚🦜🦢🪿🦩🕊🐇🦝🦨🦡🍏🍎🍐🍊🍋🍌🍉🍇🍓🫐🍈🍒🍑🥭🍍🥥🥝🍅🍆🥑🥦🫛🥬🫜🥒🌶🫑🌽🥕🫒🧄🧅🫚🥔🍠🫘🥐🥯🍞🥖🥨🧀🥚🍳🧈🥞🧇🥓🥩🍗🍖🦴🌭🍔🍟🍕🫓🥪🥙🧆🌮🌯🫔🥗🥘🫕🥫🍝🍜🍲🍛🍣🍱🥟🦪🍤🍙🍚🍘🍥🥠🥮🍢🍡🍧🍨🍦🥧🧁🍰🎂🍮🍭🍬🍫🍿🍩🍪🌰🥜🍯🥛🍼🫖☕️🍵🧃🥤🧋🫙🍶🍺🍻🥂🍷🫗🥃🍸⚽️🏀🏈⚾️🚗🚕🚙🚌🚎🏎🚓🚑🚒🚐🛻🚚🚛🚜🛴🚲🛵🏍🛺🚨🚔🚍🚘🚖🛞🚡🚠🚟🚃🚋🚞🚝🚄🚅🚈🚂🚆🚇🚊🚉✈️🛫🛬🛩💺🛰🚀🛸`;
@@ -114,6 +131,7 @@
     const choicesDiv = document.getElementById("choices");
     const messageDiv = document.getElementById("message");
     const levelText = document.getElementById("levelText");
+    const nextBtn = document.getElementById("nextBtn");
 
     function shuffle(arr) {
       return arr.sort(() => Math.random() - 0.5);
@@ -122,6 +140,7 @@
     function setupLevel() {
       messageDiv.textContent = "";
       levelText.textContent = `Level ${level}`;
+      nextBtn.style.display = "none";
 
       const emojiChoices = shuffle([...allEmojis]).slice(0, level + 1);
       const targetEmoji = emojiChoices[0];
@@ -131,8 +150,8 @@
       let emojiList = Array(correctCount).fill(targetEmoji);
 
       while (emojiList.length < 10) {
-        const fillerEmoji = shuffle(emojiChoices.slice(1)).find(e => e !== targetEmoji) || shuffle(allEmojis)[0];
-        emojiList.push(fillerEmoji);
+        const filler = shuffle(emojiChoices.slice(1))[0] || shuffle(allEmojis)[0];
+        emojiList.push(filler);
       }
 
       emojiList = shuffle(emojiList).slice(0, 10);
@@ -159,6 +178,7 @@
         btn.onclick = () => {
           if (num === correctCount) {
             messageDiv.textContent = "✅ Benar!";
+            nextBtn.style.display = "inline-block";
             setTimeout(() => {
               level++;
               setupLevel();
@@ -170,6 +190,11 @@
         choicesDiv.appendChild(btn);
       });
     }
+
+    nextBtn.onclick = () => {
+      level++;
+      setupLevel();
+    };
 
     setupLevel();
   </script>
