@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <title>Game Hitung Emoji</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
       font-family: 'Comic Sans MS', cursive;
@@ -14,9 +13,8 @@
     }
 
     h1 {
-      font-size: 2rem;
+      font-size: 2.2rem;
       color: #ff4081;
-      margin-bottom: 10px;
     }
 
     #levelText {
@@ -25,23 +23,24 @@
       color: #333;
     }
 
-    #instruction {
-      font-size: 1rem;
-      margin: 5px 0;
+    #targetBox {
+      margin-bottom: 50px;
+    }
+
+    #targetLabel {
+      font-size: 1.2rem;
+      margin-bottom: 10px;
       color: #444;
     }
 
-    #targetBox {
-      display: inline-block;
-      padding: 15px;
-      border: 2px dashed #888;
-      border-radius: 10px;
-      background-color: #fff;
-      margin-bottom: 10px;
-    }
-
     #targetEmoji {
-      font-size: 3.5rem;
+      font-size: 4rem;
+      margin: 10px auto;
+      border: 4px solid #4CAF50;
+      border-radius: 20px;
+      display: inline-block;
+      padding: 20px;
+      background-color: #fff;
     }
 
     #emojiContainer {
@@ -49,15 +48,15 @@
       flex-wrap: wrap;
       justify-content: center;
       font-size: 2.2rem;
-      gap: 10px;
-      margin: 20px auto;
+      gap: 15px;
       max-width: 90%;
+      margin: 0 auto 20px;
     }
 
     .choice-btn {
-      font-size: 1rem;
-      padding: 8px 16px;
-      margin: 5px;
+      font-size: 1.1rem;
+      padding: 10px 20px;
+      margin: 8px;
       background-color: #4CAF50;
       color: white;
       border: none;
@@ -73,21 +72,23 @@
     #message {
       font-weight: bold;
       margin-top: 10px;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
     }
 
     @media (max-width: 600px) {
       #targetEmoji {
-        font-size: 2.5rem;
+        font-size: 3rem;
+        padding: 15px;
+      }
+
+      .choice-btn {
+        font-size: 1rem;
+        padding: 8px 16px;
       }
 
       #emojiContainer {
         font-size: 1.8rem;
-      }
-
-      .choice-btn {
-        font-size: 0.9rem;
-        padding: 6px 12px;
+        gap: 10px;
       }
     }
   </style>
@@ -95,10 +96,12 @@
 <body>
   <h1>🎯 Game Hitung Emoji</h1>
   <div id="levelText">Level 1</div>
-  <p id="instruction">Hitung jumlah gambar berikut:</p>
+
   <div id="targetBox">
+    <div id="targetLabel">Hitung jumlah gambar berikut:</div>
     <div id="targetEmoji">🚗</div>
   </div>
+
   <div id="emojiContainer"></div>
   <div id="choices"></div>
   <div id="message"></div>
@@ -135,6 +138,11 @@
         emojiList.push(...Array(count).fill(emojiChoices[i]));
       }
 
+      while (emojiList.length < 10) {
+        const extra = shuffle(allEmojis)[0];
+        if (!emojiChoices.includes(extra)) emojiList.push(extra);
+      }
+
       emojiList = shuffle(emojiList).slice(0, 10);
 
       emojiContainer.innerHTML = "";
@@ -144,12 +152,10 @@
         emojiContainer.appendChild(span);
       });
 
-      const actualCount = emojiList.filter(e => e === targetEmoji).length;
-
       const options = new Set();
-      options.add(actualCount);
+      options.add(correctCount);
       while (options.size < 4) {
-        const n = actualCount + Math.floor(Math.random() * 5) - 2;
+        const n = correctCount + Math.floor(Math.random() * 5) - 2;
         if (n > 0) options.add(n);
       }
 
@@ -159,7 +165,7 @@
         btn.className = "choice-btn";
         btn.textContent = num;
         btn.onclick = () => {
-          if (num === actualCount) {
+          if (num === correctCount) {
             messageDiv.textContent = "✅ Benar!";
             setTimeout(() => {
               level++;
