@@ -18,24 +18,22 @@
     }
 
     #levelText {
-      font-size: 1.1rem;
-      margin-bottom: 10px;
+      font-size: 1.2rem;
+      margin-bottom: 15px;
       color: #333;
     }
 
     #targetBox {
-      margin-bottom: 50px;
+      margin-bottom: 40px;
     }
 
     #targetLabel {
       font-size: 1.4rem;
-      margin-bottom: 10px;
-      color: #444;
+      margin-bottom: 12px;
     }
 
     #targetEmoji {
       font-size: 6rem;
-      margin: 10px auto;
       border: 4px solid #4CAF50;
       border-radius: 20px;
       display: inline-block;
@@ -47,7 +45,6 @@
       display: grid;
       grid-template-columns: repeat(5, 1fr);
       gap: 25px;
-      justify-content: center;
       font-size: 4rem;
       max-width: 600px;
       margin: 0 auto 30px;
@@ -130,17 +127,12 @@
       const targetEmoji = emojiChoices[0];
       targetEmojiDiv.textContent = targetEmoji;
 
-      const correctCount = Math.floor(Math.random() * 3) + 1;
+      const correctCount = Math.floor(Math.random() * 5) + 1;
       let emojiList = Array(correctCount).fill(targetEmoji);
 
-      for (let i = 1; i < emojiChoices.length; i++) {
-        const count = Math.floor(Math.random() * 3) + 1;
-        emojiList.push(...Array(count).fill(emojiChoices[i]));
-      }
-
       while (emojiList.length < 10) {
-        const extra = shuffle(allEmojis)[0];
-        if (!emojiChoices.includes(extra)) emojiList.push(extra);
+        const fillerEmoji = shuffle(emojiChoices.slice(1)).find(e => e !== targetEmoji) || shuffle(allEmojis)[0];
+        emojiList.push(fillerEmoji);
       }
 
       emojiList = shuffle(emojiList).slice(0, 10);
